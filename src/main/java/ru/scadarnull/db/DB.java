@@ -1,18 +1,17 @@
 package ru.scadarnull.db;
 
-import ru.scadarnull.entity.Line;
+import ru.scadarnull.entity.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DB {
 
-    private List<Line> table1;
-    private List<Line> table2;
+    private List<Pair> table1;
+    private List<Pair> table2;
 
     private String inputFile1;
     private String inputFile2;
@@ -20,6 +19,7 @@ public class DB {
     public DB(String inputFile1, String inputFile2) {
         this.inputFile1 = inputFile1;
         this.inputFile2 = inputFile2;
+
         table1 = new ArrayList<>();
         table2 = new ArrayList<>();
     }
@@ -38,7 +38,7 @@ public class DB {
         return true;
     }
 
-    private boolean readFromFile(String file, List<Line> table){
+    private boolean readFromFile(String file, List<Pair> table){
         try(BufferedReader reader = new BufferedReader(new FileReader(file)))
         {
             String line = reader.readLine();
@@ -57,8 +57,44 @@ public class DB {
         return true;
     }
 
-    private void readLineFromFile(String line, List<Line> table) {
+    private void readLineFromFile(String line, List<Pair> table) {
         String[] fullInfo = line.split(" ");
-        table.add(new Line(Long.parseLong(fullInfo[0]), fullInfo[1]));
+        table.add(new Pair(Long.parseLong(fullInfo[0]), fullInfo[1]));
+    }
+
+    public List<Pair> getTable1AsArrayList() {
+        return table1;
+    }
+
+    public List<Pair> getTable2AsArrayList() {
+        return table2;
+    }
+
+    public List<Pair> getTable1AsLinkedList() {
+        List<Pair> result = new LinkedList<>(table1);
+        result.sort(Comparator.comparing(Pair::getId));
+        return result;
+    }
+
+    public List<Pair> getTable2AsLinkedList() {
+        List<Pair> result = new LinkedList<>(table2);
+        result.sort(Comparator.comparing(Pair::getId));
+        return result;
+    }
+
+    public Map<Long, String> getTable1AsHashMap() {
+        Map<Long, String> result = new HashMap<>();
+        for(Pair line : table1){
+            result.put(line.getId(), line.getValue());
+        }
+        return result;
+    }
+
+    public Map<Long, String> getTable2AsHashMap() {
+        Map<Long, String> result = new HashMap<>();
+        for(Pair line : table2){
+            result.put(line.getId(), line.getValue());
+        }
+        return result;
     }
 }

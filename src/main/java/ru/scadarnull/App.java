@@ -1,6 +1,10 @@
 package ru.scadarnull;
 
 import ru.scadarnull.db.DB;
+import ru.scadarnull.entity.Triple;
+import ru.scadarnull.service.MergeService;
+
+import java.util.List;
 
 public class App 
 {
@@ -13,6 +17,10 @@ public class App
             String file2 = args[1];
             DB db = new DB(file1, file2);
             db.readFromFiles();
+            List<Triple> triples = MergeService.leftJoin(db.getTable1AsHashMap(), db.getTable2AsHashMap());
+            for(Triple triple : triples){
+                System.out.println(triple.getId() + "  " + triple.getValue1() + "  " + triple.getValue2());
+            }
         }
     }
 }

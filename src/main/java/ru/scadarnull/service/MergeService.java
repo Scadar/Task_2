@@ -45,6 +45,7 @@ public class MergeService {
 
     public static List<Triple> leftJoin(Map<Long, String> table1, Map<Long, String> table2){
         //Проблема с ключами(нет повторений)
+        //Есть ли подобие multiMap? Будет ли он работать так же быстро как тут на hash?
         List<Triple> result = new ArrayList<>();
         for(Map.Entry<Long, String> left : table1.entrySet()){
             result.add(new Triple(left.getKey(), left.getValue(), ""));

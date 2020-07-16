@@ -16,11 +16,23 @@ public class App
             String file1 = args[0];
             String file2 = args[1];
             DB db = new DB(file1, file2);
-            db.readFromFiles();
-            List<Triple> triples = MergeService.leftJoin(db.getTable1AsArrayList(), db.getTable2AsArrayList());
-            for(Triple triple : triples){
-                System.out.println(triple.getId() + "  " + triple.getValue1() + "  " + triple.getValue2());
+            if(db.readFromFiles()){
+                List<Triple> triples1 = MergeService.leftJoin(db.getTable1AsArrayList(), db.getTable2AsArrayList());
+                List<Triple> triples2 = MergeService.leftJoin(db.getTable1AsLinkedList(), db.getTable2AsLinkedList());
+                List<Triple> triples3 = MergeService.leftJoin(db.getTable1AsHashMap(), db.getTable2AsHashMap());
+                for(Triple triple : triples1){
+                    System.out.println(triple.getId() + "  " + triple.getValue1() + "  " + triple.getValue2());
+                }
+                System.out.println(" ");
+                for(Triple triple : triples2){
+                    System.out.println(triple.getId() + "  " + triple.getValue1() + "  " + triple.getValue2());
+                }
+                System.out.println(" ");
+                for(Triple triple : triples3){
+                    System.out.println(triple.getId() + "  " + triple.getValue1() + "  " + triple.getValue2());
+                }
             }
+
         }
     }
 }

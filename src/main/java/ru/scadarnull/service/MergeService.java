@@ -53,12 +53,11 @@ public class MergeService {
         //Проблема с ключами(нет повторений)
         //Есть ли подобие multiMap? Будет ли он работать так же быстро как тут на hash?
         List<Triple> result = new ArrayList<>();
-        for(Map.Entry<Long, String> left : table1.entrySet()){
-            result.add(new Triple(left.getKey(), left.getValue(), ""));
-        }
-        for(Triple triple : result){
-            if(table2.containsKey(triple.getId())){
-                triple.setValue2(table2.get(triple.getId()));
+        for(Map.Entry<Long, String> pair: table1.entrySet()){
+            Triple temp = new Triple(pair.getKey(), pair.getValue(), "");
+            result.add(temp);
+            if(table2.containsKey(pair.getKey())){
+                temp.setValue2(table2.get(pair.getKey()));
             }
         }
         return result;

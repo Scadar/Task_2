@@ -62,36 +62,36 @@ public class DB {
         table.add(new Pair(Long.parseLong(fullInfo[0]), fullInfo[1]));
     }
 
-    public List<Pair> getTable1AsArrayList() {
-        return table1;
+    public ArrayList<Pair> getTable1AsArrayList() {
+        return new ArrayList<>(table1);
     }
 
-    public List<Pair> getTable2AsArrayList() {
-        return table2;
+    public ArrayList<Pair> getTable2AsArrayList() {
+        return new ArrayList<>(table2);
     }
 
-    public List<Pair> getTable1AsLinkedList() {
-        List<Pair> result = new LinkedList<>(table1);
+    public LinkedList<Pair> getTable1AsLinkedList() {
+        LinkedList<Pair> result = new LinkedList<>(table1);
         result.sort(Comparator.comparing(Pair::getId));
         return result;
     }
 
-    public List<Pair> getTable2AsLinkedList() {
-        List<Pair> result = new LinkedList<>(table2);
+    public LinkedList<Pair> getTable2AsLinkedList() {
+        LinkedList<Pair> result = new LinkedList<>(table2);
         result.sort(Comparator.comparing(Pair::getId));
         return result;
     }
 
-    public Map<Long, String> getTable1AsHashMap() {
-        Map<Long, String> result = new HashMap<>();
+    public HashMap<Long, String> getTable1AsHashMap() {
+        HashMap<Long, String> result = new HashMap<>();
         for(Pair line : table1){
             result.put(line.getId(), line.getValue());
         }
         return result;
     }
 
-    public Map<Long, String> getTable2AsHashMap() {
-        Map<Long, String> result = new HashMap<>();
+    public HashMap<Long, String> getTable2AsHashMap() {
+        HashMap<Long, String> result = new HashMap<>();
         for(Pair line : table2){
             result.put(line.getId(), line.getValue());
         }

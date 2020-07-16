@@ -17,7 +17,7 @@ public class App
             String file2 = args[1];
             DB db = new DB(file1, file2);
             db.readFromFiles();
-            List<Triple> triples = MergeService.leftJoin(db.getTable1AsHashMap(), db.getTable2AsHashMap());
+            List<Triple> triples = MergeService.leftJoin(db.getTable1AsArrayList(), db.getTable2AsArrayList());
             for(Triple triple : triples){
                 System.out.println(triple.getId() + "  " + triple.getValue1() + "  " + triple.getValue2());
             }

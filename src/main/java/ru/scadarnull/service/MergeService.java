@@ -7,9 +7,9 @@ import java.util.*;
 
 public class MergeService {
 
-    public static List<Triple> leftJoin(List<Pair> table1, List<Pair> table2){
-        //test
-        List<Triple> result = new ArrayList<>();
+    public static List<Triple> leftJoin(ArrayList<Pair> table1, ArrayList<Pair> table2){
+        //Надо именно через такие структуры данных или можно через интерфейсы?
+        ArrayList<Triple> result = new ArrayList<>();
         for(Pair line : table1){
             result.add(new Triple(line.getId(), line.getValue(), ""));
         }
@@ -25,10 +25,22 @@ public class MergeService {
     }
 
     public static List<Triple> leftJoin(LinkedList<Pair> table1, LinkedList<Pair> table2){
-        //Отсортированны по id, двусвязный список a->b->c
-        //List<Triple> result = new ArrayList<>();
-        return null;
-        //return result;
+        //Такую же логику можно и с ArrayList
+        List<Triple> result = new LinkedList<>();
+        Iterator<Pair> iter = table2.listIterator();
+        Pair pair = table2.getFirst();//Обработать 1 элемент (его отсутствие)
+        for(Pair line : table1){
+            result.add(new Triple(line.getId(), line.getValue(), ""));
+        }
+        for(Triple triple : result){
+            while (iter.hasNext() && triple.getId().compareTo(pair.getId()) > 0){
+                pair = iter.next();
+            }
+            if(triple.getId().compareTo(pair.getId()) == 0){
+                triple.setValue2(pair.getValue());
+            }
+        }
+        return result;
     }
 
     public static List<Triple> leftJoin(Map<Long, String> table1, Map<Long, String> table2){

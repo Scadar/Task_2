@@ -83,30 +83,26 @@ public class DB {
     }
 
     public HashMap<Long, List<String>> getTable1AsHashMap() {
+        return getLongListHashMap(table1);
+    }
+
+    public HashMap<Long, List<String>> getTable2AsHashMap() {
+        return getLongListHashMap(table2);
+    }
+
+    private HashMap<Long, List<String>> getLongListHashMap(List<Pair> table) {
         HashMap<Long, List<String>> result = new HashMap<>();
-        for(Pair line : table1){
-            if(result.containsKey(line.getId())){
-                result.get(line.getId()).add(line.getValue());
+        for(Pair pair : table){
+            if(result.containsKey(pair.getId())){
+                result.get(pair.getId()).add(pair.getValue());
             }else{
                 List<String> temp = new ArrayList<>();
-                temp.add(line.getValue());
-                result.put(line.getId(), temp);
+                temp.add(pair.getValue());
+                result.put(pair.getId(), temp);
             }
         }
         return result;
     }
 
-    public HashMap<Long, List<String>> getTable2AsHashMap() {
-        HashMap<Long, List<String>> result = new HashMap<>();
-        for(Pair line : table2){
-            if(result.containsKey(line.getId())){
-                result.get(line.getId()).add(line.getValue());
-            }else{
-                List<String> temp = new ArrayList<>();
-                temp.add(line.getValue());
-                result.put(line.getId(), temp);
-            }
-        }
-        return result;
-    }
+
 }

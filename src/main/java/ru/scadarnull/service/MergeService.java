@@ -24,30 +24,59 @@ public class MergeService {
         return result;
     }
 
+//    public static List<Triple> leftJoin(LinkedList<Pair> table1, LinkedList<Pair> table2){
+//
+//        List<Triple> result = new LinkedList<>();
+//        Iterator<Pair> iter1 = table1.listIterator();
+//        Iterator<Pair> iter2 = table2.listIterator();
+//        if(table2.size() == 0){
+//            for(Pair pair : table1){
+//                result.add(new Triple(pair.getId(), pair.getValue(), ""));
+//            }
+//            return result;
+//        }
+//        Pair firstPair = table2.getFirst();
+//
+//        for(Pair pair : table1){
+//            while (iter1.hasNext() && pair.getId().compareTo(firstPair.getId()) > 0){
+//                firstPair = iter1.next();
+//            }
+//            if(pair.getId().compareTo(firstPair.getId()) == 0){
+//                result.add(new Triple(pair.getId(), pair.getValue(), firstPair.getValue()));
+//            }else{
+//                result.add(new Triple(pair.getId(), pair.getValue(), ""));
+//            }
+//        }
+//
+//        return result;
+//    }
+
     public static List<Triple> leftJoin(LinkedList<Pair> table1, LinkedList<Pair> table2){
 
         List<Triple> result = new LinkedList<>();
-        Iterator<Pair> iter1 = table1.listIterator();
-        Iterator<Pair> iter2 = table2.listIterator();
-        if(table2.size() == 0){
-            for(Pair pair : table1){
-                result.add(new Triple(pair.getId(), pair.getValue(), ""));
+        ListIterator<Pair> iter1 = table1.listIterator();
+        ListIterator<Pair> iter2 = table2.listIterator();
+        Map<Long, List<String>> map = new HashMap<>();
+        while (iter2.hasNext()){
+            Pair pair = iter2.next();
+            if(map.containsKey(pair.getId())){
+                map.get(pair.getId()).add(pair.getValue());
+            }else{
+                List<String> temp = new ArrayList<>();
+                temp.add(pair.getValue());
+                map.put(pair.getId(), temp);
             }
-            return result;
         }
-        Pair firstPair = table2.getFirst();
-
-        for(Pair pair : table1){
-            while (iter1.hasNext() && pair.getId().compareTo(firstPair.getId()) > 0){
-                firstPair = iter1.next();
-            }
-            if(pair.getId().compareTo(firstPair.getId()) == 0){
-                result.add(new Triple(pair.getId(), pair.getValue(), firstPair.getValue()));
+        while (iter1.hasNext()){
+            Pair pair = iter1.next();
+            if(map.containsKey(pair.getId())){
+                for(String str : map.get(pair.getId())){
+                    result.add(new Triple(pair.getId(), pair.getValue(), str));
+                }
             }else{
                 result.add(new Triple(pair.getId(), pair.getValue(), ""));
             }
         }
-
         return result;
     }
 

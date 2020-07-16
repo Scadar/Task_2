@@ -82,18 +82,30 @@ public class DB {
         return result;
     }
 
-    public HashMap<Long, String> getTable1AsHashMap() {
-        HashMap<Long, String> result = new HashMap<>();
+    public HashMap<Long, List<String>> getTable1AsHashMap() {
+        HashMap<Long, List<String>> result = new HashMap<>();
         for(Pair line : table1){
-            result.put(line.getId(), line.getValue());
+            if(result.containsKey(line.getId())){
+                result.get(line.getId()).add(line.getValue());
+            }else{
+                List<String> temp = new ArrayList<>();
+                temp.add(line.getValue());
+                result.put(line.getId(), temp);
+            }
         }
         return result;
     }
 
-    public HashMap<Long, String> getTable2AsHashMap() {
-        HashMap<Long, String> result = new HashMap<>();
+    public HashMap<Long, List<String>> getTable2AsHashMap() {
+        HashMap<Long, List<String>> result = new HashMap<>();
         for(Pair line : table2){
-            result.put(line.getId(), line.getValue());
+            if(result.containsKey(line.getId())){
+                result.get(line.getId()).add(line.getValue());
+            }else{
+                List<String> temp = new ArrayList<>();
+                temp.add(line.getValue());
+                result.put(line.getId(), temp);
+            }
         }
         return result;
     }

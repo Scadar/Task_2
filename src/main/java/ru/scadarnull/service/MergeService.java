@@ -8,25 +8,27 @@ import java.util.*;
 public class MergeService {
 
     public static List<Triple> leftJoin(ArrayList<Pair> table1, ArrayList<Pair> table2){
-        //Надо именно через такие структуры данных или можно через интерфейсы?
         ArrayList<Triple> result = new ArrayList<>();
         for(Pair pair1 : table1){
-            Triple temp = new Triple(pair1.getId(), pair1.getValue(), "");
-            result.add(temp);
+            boolean single = true;
             for(Pair pair2 : table2){
                 if(pair1.getId().equals(pair2.getId())){
-                    temp.setValue2(pair2.getValue());
-                    break;
+                    result.add(new Triple(pair1.getId(), pair1.getValue(), pair2.getValue()));
+                    single = false;
                 }
+            }
+            if(single){
+                result.add(new Triple(pair1.getId(), pair1.getValue(), ""));
             }
         }
         return result;
     }
 
     public static List<Triple> leftJoin(LinkedList<Pair> table1, LinkedList<Pair> table2){
-        //Такую же логику можно и с ArrayList(только надо отсортировать)
+
         List<Triple> result = new LinkedList<>();
-        Iterator<Pair> iter = table2.listIterator();
+        Iterator<Pair> iter1 = table1.listIterator();
+        Iterator<Pair> iter2 = table2.listIterator();
         if(table2.size() == 0){
             for(Pair pair : table1){
                 result.add(new Triple(pair.getId(), pair.getValue(), ""));
@@ -36,8 +38,8 @@ public class MergeService {
         Pair firstPair = table2.getFirst();
 
         for(Pair pair : table1){
-            while (iter.hasNext() && pair.getId().compareTo(firstPair.getId()) > 0){
-                firstPair = iter.next();
+            while (iter1.hasNext() && pair.getId().compareTo(firstPair.getId()) > 0){
+                firstPair = iter1.next();
             }
             if(pair.getId().compareTo(firstPair.getId()) == 0){
                 result.add(new Triple(pair.getId(), pair.getValue(), firstPair.getValue()));
@@ -49,15 +51,21 @@ public class MergeService {
         return result;
     }
 
-    public static List<Triple> leftJoin(Map<Long, String> table1, Map<Long, String> table2){
-        //Проблема с ключами(нет повторений)
-        //Есть ли подобие multiMap? Будет ли он работать так же быстро как тут на hash?
+    public static List<Triple> leftJoin(Map<Long, List<String>> table1, Map<Long, List<String>> table2){
         List<Triple> result = new ArrayList<>();
-        for(Map.Entry<Long, String> pair: table1.entrySet()){
-            Triple temp = new Triple(pair.getKey(), pair.getValue(), "");
-            result.add(temp);
+
+        for(Map.Entry<Long, List<String>> pair: table1.entrySet()){
             if(table2.containsKey(pair.getKey())){
-                temp.setValue2(table2.get(pair.getKey()));
+                for(String value1 : pair.getValue()){
+                    for(String value2 : table2.get(pair.getKey())){
+                        result.add(new Triple(pair.getKey(), value1, value2));
+                    }
+                }
+            }else{
+                for(String value : pair.getValue()){
+                    result.add(new Triple(pair.getKey(), value, ""));
+
+                }
             }
         }
         return result;

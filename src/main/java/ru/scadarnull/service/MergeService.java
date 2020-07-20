@@ -58,15 +58,15 @@ public class MergeService {
         List<Triple> result = new LinkedList<>();
         ListIterator<Pair> iter1 = table1.listIterator();
         ListIterator<Pair> iter2 = table2.listIterator();
-        List<Pair> temp = new ArrayList<>();
+        List<Triple> temp = new ArrayList<>();
         Pair pairOfTable2 = iter2.next();
         while (iter1.hasNext()){
 
             Pair pairOfTable1 = iter1.next();
 
             if(!temp.isEmpty() && pairOfTable1.getId().compareTo(temp.get(0).getId()) == 0){
-                for(Pair tempPair : temp){
-                    result.add(new Triple(pairOfTable1.getId(), pairOfTable1.getValue(), tempPair.getValue()));
+                for(Triple triple : temp){
+                    result.add(new Triple(triple.getId(), pairOfTable1.getValue(), triple.getValue2()));
                 }
                 continue;
             }else{
@@ -78,14 +78,12 @@ public class MergeService {
             }
 
             while (pairOfTable1.getId().compareTo(pairOfTable2.getId()) == 0 && iter2.hasNext()){
-                temp.add(new Pair(pairOfTable2.getId(), pairOfTable2.getValue()));
+                temp.add(new Triple(pairOfTable1.getId(), pairOfTable1.getValue(), pairOfTable2.getValue()));
                 pairOfTable2 = iter2.next();
             }
 
             if(!temp.isEmpty()){
-                for(Pair tempPair : temp){
-                    result.add(new Triple(pairOfTable1.getId(), pairOfTable1.getValue(), tempPair.getValue()));
-                }
+                result.addAll(temp);
             }else{
                 result.add(new Triple(pairOfTable1.getId(), pairOfTable1.getValue(), ""));
             }

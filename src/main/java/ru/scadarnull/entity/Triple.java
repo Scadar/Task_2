@@ -24,7 +24,7 @@ public class Triple {
         return value2;
     }
 
-    public void setValue2(String value2) {
-        this.value2 = value2;
+    public void setValue1(String value1) {
+        this.value1 = value1;
     }
 }

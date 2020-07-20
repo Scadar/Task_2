@@ -3,7 +3,9 @@ package ru.scadarnull.service;
 import ru.scadarnull.entity.Pair;
 import ru.scadarnull.entity.Triple;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class MergeService {
 
@@ -56,25 +58,36 @@ public class MergeService {
         List<Triple> result = new LinkedList<>();
         ListIterator<Pair> iter1 = table1.listIterator();
         ListIterator<Pair> iter2 = table2.listIterator();
-        Map<Long, List<String>> map = new HashMap<>();
-        while (iter2.hasNext()){
-            Pair pair = iter2.next();
-            if(map.containsKey(pair.getId())){
-                map.get(pair.getId()).add(pair.getValue());
-            }else{
-                List<String> temp = new ArrayList<>();
-                temp.add(pair.getValue());
-                map.put(pair.getId(), temp);
-            }
-        }
+        List<Pair> temp = new ArrayList<>();
+        Pair pairOfTable2 = iter2.next();
         while (iter1.hasNext()){
-            Pair pair = iter1.next();
-            if(map.containsKey(pair.getId())){
-                for(String str : map.get(pair.getId())){
-                    result.add(new Triple(pair.getId(), pair.getValue(), str));
+
+            Pair pairOfTable1 = iter1.next();
+
+            if(!temp.isEmpty() && pairOfTable1.getId().compareTo(temp.get(0).getId()) == 0){
+                for(Pair tempPair : temp){
+                    result.add(new Triple(pairOfTable1.getId(), pairOfTable1.getValue(), tempPair.getValue()));
+                }
+                continue;
+            }else{
+                temp.clear();
+            }
+
+            while (iter2.hasNext() && pairOfTable2.getId().compareTo(pairOfTable1.getId()) < 0){
+                pairOfTable2 = iter2.next();
+            }
+
+            while (pairOfTable1.getId().compareTo(pairOfTable2.getId()) == 0 && iter2.hasNext()){
+                temp.add(new Pair(pairOfTable2.getId(), pairOfTable2.getValue()));
+                pairOfTable2 = iter2.next();
+            }
+
+            if(!temp.isEmpty()){
+                for(Pair tempPair : temp){
+                    result.add(new Triple(pairOfTable1.getId(), pairOfTable1.getValue(), tempPair.getValue()));
                 }
             }else{
-                result.add(new Triple(pair.getId(), pair.getValue(), ""));
+                result.add(new Triple(pairOfTable1.getId(), pairOfTable1.getValue(), ""));
             }
         }
         return result;

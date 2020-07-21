@@ -56,6 +56,10 @@ public class MergeService {
                 pairOfTable2 = iter2.next();
             }
 
+            if(!iter2.hasNext() && pairOfTable1.getId().compareTo(pairOfTable2.getId()) == 0){
+                temp.add(new Triple(pairOfTable1.getId(), pairOfTable1.getValue(), pairOfTable2.getValue()));
+            }
+
             if(!temp.isEmpty()){
                 result.addAll(temp);
             }else{

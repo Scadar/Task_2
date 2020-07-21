@@ -5,6 +5,9 @@ public class Pair {
     private Long id;
     private String value;
 
+    public Pair() {
+    }
+
     public Pair(Long id, String value) {
         this.id = id;
         this.value = value;

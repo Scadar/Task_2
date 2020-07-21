@@ -33,6 +33,14 @@ public class MergeService {
         ListIterator<Pair> iter1 = table1.listIterator();
         ListIterator<Pair> iter2 = table2.listIterator();
         List<Triple> temp = new ArrayList<>();
+
+        if(table2.isEmpty()){
+            for(Pair pair : table1){
+                result.add(new Triple(pair.getId(), pair.getValue(), ""));
+            }
+            return result;
+        }
+
         Pair pairOfTable2 = iter2.next();
         while (iter1.hasNext()){
 
